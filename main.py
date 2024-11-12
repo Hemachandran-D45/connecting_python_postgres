@@ -1,13 +1,17 @@
-import psycopg2
+import pg8000
 
 # This block is used for database connection and executing commands
+
+cur = None
+conn = None
+
 try:
      # Establishing the connection to the PostgreSQL database
-    conn = psycopg2.connect(
+    conn = pg8000.connect(
         host="localhost",  # The host where the database is running (localhost for local machine)
-        dbname="postgres",  # The name of the database you're connecting to
+        database="postgres",  # The name of the database you're connecting to
         user="postgres",  # The database user 
-        password="4065",  
+        password="1234",  
         port="5432"  # The port the PostgreSQL service is listening on (default is 5432)
     )
 # Creating a cursor object to interact with the database
@@ -62,8 +66,10 @@ except Exception as e:
     print(f"An error occurred: {e}")
 
 finally:
-    cur.close()  # Close the cursor (prevents memory leaks)
-    conn.close()  # Close the connection to the database (releases resources)
+    if cur:
+        cur.close()  # Close the cursor (prevents memory leaks)
+    if conn:
+      conn.close()  # Close the connection to the database (releases resources)
     # print("Database connection closed.")
 
 
